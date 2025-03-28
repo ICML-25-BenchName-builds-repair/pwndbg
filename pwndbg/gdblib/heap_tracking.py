@@ -62,7 +62,7 @@ FREE_NAME = "free"
 
 last_issue = None
 
-# Useful to track possbile collision errors.
+# Useful to track possible collision errors.
 PRINT_DEBUG = False
 
 def is_enabled() -> bool:
@@ -170,7 +170,7 @@ class Tracker:
     def __init__(self):
         self.free_chunks = SortedDict()
         self.alloc_chunks = SortedDict()
-        self.free_whatchpoints = dict()
+        self.free_watchpoints = dict()
         self.memory_management_calls = dict()
 
     def is_performing_memory_management(self):
@@ -251,7 +251,7 @@ class Tracker:
                     addr, ch = self.free_chunks.popitem(index=i)
 
                     self.free_whatchpoints[addr].delete()
-                    del self.free_whatchpoints[addr]
+                    del self.free_watchpoints[addr]
 
                 # Add new handlers in their place. We scan over all of the chunks in
                 # the heap in the range of affected chunks, and add the ones that
@@ -295,7 +295,7 @@ class Tracker:
                             wp = FreeChunkWatchpoint(nch, self)
 
                             self.free_chunks[ch.address] = nch
-                            self.free_whatchpoints[ch.address] = wp
+                            self.free_watchpoints[ch.address] = wp
 
                             # Move on to the next chunk.
                             found = True
@@ -533,9 +533,9 @@ realloc_enter = None
 free_enter = None
 
 # Whether the inferior should be stopped when an error is detected.
-stop_on_error = True
+stop_on_error = True  # (No change, just included for context)
 
-def install(disable_hardware_whatchpoints=True):
+def install(disable_hardware_watchpoints=True):
     global malloc_enter
     global calloc_enter
     global realloc_enter
@@ -566,7 +566,7 @@ def install(disable_hardware_whatchpoints=True):
     # consistency and so that we don't have to chase silent failures.
     #
     # [1]: https://sourceware.org/gdb/onlinedocs/gdb/Set-Watchpoints.html
-    if disable_hardware_whatchpoints:
+    if disable_hardware_watchpoints:
         gdb.execute("set can-use-hw-watchpoints 0")
         print("Hardware watchpoints have been disabled. Please do not turn them back on until")
         print("heap tracking is disabled, as it may lead to unexpected silent errors.")
