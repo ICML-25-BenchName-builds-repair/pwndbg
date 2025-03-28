@@ -533,7 +533,7 @@ realloc_enter = None
 free_enter = None
 
 # Whether the inferior should be stopped when an error is detected.
-stop_on_error = True
+stop_on_error = False
 
 def install(disable_hardware_whatchpoints=True):
     global malloc_enter
