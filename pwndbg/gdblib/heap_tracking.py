@@ -50,6 +50,7 @@ that were not made explicit.
 import itertools
 import gdb
 from sortedcontainers import SortedDict
+from typing import Optional
 
 import pwndbg.gdblib
 from pwndbg.color import message
@@ -85,7 +86,7 @@ def _basename(val):
     """
     val.split("/")[-1]
 
-def resolve_address(name: str) -> int | None:
+def resolve_address(name: str) -> Optional[int]:
     """
     Checks whether a given symbol is available and part of libc, and returns its
     address.
